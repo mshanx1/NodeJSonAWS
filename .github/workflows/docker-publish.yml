@@ -37,13 +37,11 @@ jobs:
         env:
           ECR_REGISTRY: "242126527937.dkr.ecr.ca-central-1.amazonaws.com"
           ECR_REPOSITORY: "jsapp-for-node"
-          IMAGE_TAG: v1-${{ steps.commit.outputs.short }}
+          IMAGE_TAG: v1
         run: |
-          ver="v1"
-          FINALVER="$ver${{ steps.commit.outputs.short }}"
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$FINALVER .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$FINALVER
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$FINALVER"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
     
 
