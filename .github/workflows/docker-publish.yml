@@ -37,7 +37,7 @@ jobs:
         env:
           ECR_REGISTRY: "242126527937.dkr.ecr.ca-central-1.amazonaws.com"
           ECR_REPOSITORY: "jsapp-for-node"
-          IMAGE_TAG: v1
+          IMAGE_TAG: $(git rev-parse --short "$GITHUB_SHA")
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
