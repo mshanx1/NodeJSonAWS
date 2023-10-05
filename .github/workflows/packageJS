@@ -1,0 +1,45 @@
+name: "Manual Build Image" 
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+ workflow_dispatch:
+   inputs:
+     prompt: 
+       type: text
+       required: true
+       description: "version_tag"
+
+jobs:
+  BuildAndPushToECR:
+    name: "Build And Push To ECR"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: "ca-central-1"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR 🏷
+        id: build-image
+        env:
+          ECR_REGISTRY: "242126527937.dkr.ecr.ca-central-1.amazonaws.com"
+          ECR_REPOSITORY: "jsapp-for-node"
+          IMAGE_TAG: v1
+        run: |
+          ver="v1-${{ github.event.inputs.prompt }}"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$ver .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ver
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$ver"
