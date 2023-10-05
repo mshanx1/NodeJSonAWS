@@ -1,7 +1,18 @@
-var http = require('http');
-
-//create a server object:
-http.createServer(function (req, res) {
-  res.write('AWS Cloud is Best'); //write a response to the client
-  res.end(); //end the response
-}).listen(80); //the server object listens on port 80
+'use strict';
+ 
+const express = require('express');
+ 
+// Constants
+const PORT = 8080;
+const HOST = '0.0.0.0';
+ 
+// App
+const app = express();
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+ 
+app.listen(PORT, HOST, () => {
+  console.log(`Running on http://${HOST}:${PORT}`);
+});
+>>>>>>> Stashed changes
