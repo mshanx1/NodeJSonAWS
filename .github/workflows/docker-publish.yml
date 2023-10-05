@@ -39,13 +39,12 @@ jobs:
           ECR_REPOSITORY: "jsapp-for-node"
           IMAGE_TAG: v1
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           ver="v1-$(git rev-parse --short "$GITHUB_SHA")"
-          echo "$(git rev-parse --short "$GITHUB_SHA")"
-          echo "NewImageTags"
-          echo "$ver"
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$ver .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ver
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$ver"
+
+         
 
     
 
